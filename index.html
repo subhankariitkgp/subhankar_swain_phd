@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Subhankar Swain | Doctoral Researcher | IIT Kharagpur</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary-dark: #0a0c10;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-muted: #9ca3af;
+            --border-color: #e5e7eb;
+            --bg-canvas: #f9fafb;
+            --bg-card: #ffffff;
+            --accent-blue: #2563eb;
+            --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-canvas);
+            color: var(--text-primary);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ── INTERACTIVE APP BAR (STICKY NAV) ── */
+        .app-header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 3rem;
+            z-index: 1000;
+        }
+
+        .header-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            font-size: 1.15rem;
+            letter-spacing: -0.01em;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 1.75rem;
+            list-style: none;
+        }
+
+        .header-nav a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .header-nav a:hover,
+        .header-nav a.active {
+            color: var(--primary-dark);
+            border-bottom-color: var(--primary-dark);
+        }
+
+        /* ── SPLIT FRAMEWORK WINDOWS ── */
+        .portal-layout {
+            display: flex;
+            width: 100%;
+            margin-top: 64px;
+        }
+
+        /* LEFT PANEL */
+        .profile-panel {
+            width: 360px;
+            min-width: 360px;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border-color);
+            padding: 3.5rem 3rem;
+            position: fixed;
+            top: 64px;
+            bottom: 0;
+            left: 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .profile-img-frame {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 2rem;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        .academic-status {
+            position: absolute;
+            bottom: -6px;
+            right: -6px;
+            background: var(--primary-dark);
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 2px;
+            letter-spacing: 0.05em;
+        }
+
+        .profile-meta h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .institution-tag {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+
+        .formal-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            margin-top: 2rem;
+        }
+
+        .formal-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition-smooth);
+        }
+
+        .formal-links a:hover {
+            color: var(--accent-blue);
+            text-decoration: underline;
+        }
+
+        .personal-quote {
+            margin-top: 2.5rem;
+            font-style: italic;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            border-left: 2px solid var(--primary-dark);
+            padding-left: 0.75rem;
+            line-height: 1.5;
+        }
+
+        .system-monitor {
+            background: var(--bg-canvas);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            margin-top: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* RIGHT PANEL: WORKSPACE */
+        .workspace-panel {
+            margin-left: 360px;
+            flex: 1;
+            padding: 4rem 5rem;
+            max-width: 1000px;
+        }
+
+        .section-block {
+            margin-bottom: 5rem;
+            scroll-margin-top: 100px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 500;
+            border-bottom: 1px solid var(--primary-dark);
+            padding-bottom: 0.75rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .section-title span {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .executive-summary {
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            line-height: 1.75;
+        }
+
+        .executive-summary p {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Micro-Timeline updates styling */
+        .updates-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .update-item {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .update-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            min-width: 85px;
+            padding-top: 0.2rem;
+            font-weight: 500;
+        }
+
+        .update-text {
+            color: var(--text-primary);
+        }
+
+        .update-text strong {
+            font-weight: 600;
+        }
+
+        .scholarly-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .scholarly-row {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px dashed var(--border-color);
+            transition: var(--transition-smooth);
+        }
+
+        .scholarly-row:hover {
+            border-bottom-style: solid;
+            border-bottom-color: var(--text-muted);
+        }
+
+        .row-timeline {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding-top: 0.2rem;
+        }
+
+        .row-content h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.35rem;
+            line-height: 1.4;
+        }
+
+        .sub-institution {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .sub-institution a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .sub-institution a:hover {
+            text-decoration: underline;
+            color: var(--accent-blue);
+        }
+
+        .details {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Filter Hub for Publications */
+        .filter-header-menu {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .formal-tab-btn {
+            background: transparent;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.25rem 0;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition-smooth);
+        }
+
+        .formal-tab-btn:hover {
+            color: var(--primary-dark);
+        }
+
+        .formal-tab-btn.active-tab {
+            color: var(--primary-dark);
+            border-bottom-color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .pub-record {
+            transition: var(--transition-smooth);
+        }
+
+        .pub-record.hidden {
+            display: none;
+        }
+
+        .author-list {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .author-list strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .venue-tag {
+            font-style: italic;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            display: inline-block;
+            margin-right: 0.75rem;
+        }
+
+        .pub-assets {
+            margin-top: 0.75rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .asset-link {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            text-decoration: none;
+            color: var(--accent-blue);
+            font-weight: 500;
+        }
+
+        .asset-link:hover {
+            text-decoration: underline;
+        }
+
+        .portal-footer {
+            margin-top: 8rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 960px) {
+            body {
+                flex-direction: column;
+            }
+
+            .app-header {
+                padding: 0 1.5rem;
+            }
+
+            .header-nav {
+                display: none;
+            }
+
+            .portal-layout {
+                flex-direction: column;
+            }
+
+            .profile-panel {
+                position: relative;
+                width: 100%;
+                min-width: 100%;
+                top: 0;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 2rem 1.5rem;
+            }
+
+            .workspace-panel {
+                margin-left: 0;
+                padding: 3rem 1.5rem;
+            }
+
+            .scholarly-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="app-header">
+        <div class="header-brand">Subhankar Swain</div>
+        <ul class="header-nav">
+            <li><a href="#about" class="active">Overview</a></li>
+            <li><a href="#updates">Updates</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#publications">Publications</a></li>
+            <li><a href="#teaching">Teaching</a></li>
+            <li><a href="#experience">Experience</a></li>
+        </ul>
+    </header>
+
+    <div class="portal-layout">
+
+        <aside class="profile-panel">
+            <div>
+                <div class="profile-img-frame">
+                    <img class="profile-img" src="./images/profile.jpeg" alt="Subhankar Swain Photo">
+                    <span class="academic-status">PHD RESEARCHER</span>
+                </div>
+
+                <div class="profile-meta">
+                    <h2>Subhankar Swain</h2>
+                    <div class="institution-tag">
+                        Department of Computer Science & Engineering<br>
+                        Indian Institute of Technology, Kharagpur
+                    </div>
+                </div>
+
+                <div class="formal-links">
+                    <a href="mailto:swainsubhankar.official@gmail.com">⚡ swainsubhankar.official@gmail.com</a>
+                    <a href="https://scholar.google.com/citations?user=8Nyv71IAAAAJ" target="_blank">📄 Google
+                        Scholar</a>
+                    <a href="https://www.linkedin.com/in/subhankar-swain-031080208/" target="_blank">🔗 LinkedIn</a>
+                    <a href="https://github.com/subhankariitkgp?tab=repositories" target="_blank">📦 GitHub</a>
+                    <a href="https://www.researchgate.net/profile/Subhankar-Swain?ev=hdr_xprf" target="_blank">🧪 ResearchGate</a>
+                    <a href="./images/cv.pdf" target="_blank">⬇️ CV / Resume</a>
+                </div>
+                <div class="personal-quote">
+                    "Everyone has their own timing. I'm still waiting for mine. Until then, I'm in the construction
+                    phase—learning, building, and growing."
+                </div>
+            </div>
+
+            <div class="system-monitor" id="telemetry-trigger">
+                [PORTAL METRICS]<br>
+                • Status: System Idle<br>
+                • Compilation: Stable (0.00ms)<br>
+                • Click to probe environment...
+            </div>
+        </aside>
+
+        <main class="workspace-panel">
+
+            <section class="section-block" id="about">
+                <div class="section-title">
+                    About Me <span>01 // Overview</span>
+                </div>
+                <div class="executive-summary">
+                    <p>Hello! I am a Doctoral Researcher in the Department of Computer Science and Engineering at <a
+                            href="https://www.iitkgp.ac.in/" target="_blank">IIT Kharagpur</a>, working with <a
+                            href="https://cse.iitkgp.ac.in/~animeshm/" target="_blank">Prof. Animesh
+                            Mukherjee</a>. I am also a member of the <a href="https://cnerg-iitkgp.github.io/"
+                            target="_blank">Complex Networks Research Group (CNeRG)</a>.</p>
+
+                    <p>I completed my Bachelor's degree from Government College of Engineering, Keonjhar. My research
+                        focuses on multimodal harmful content detection, with interests in Natural Language Processing,
+                        Computer Vision, and trustworthy AI.</p>
+
+                </div>
+            </section>
+
+            <section class="section-block" id="updates">
+                <div class="section-title">
+                    Recent Updates <span>02 // Timeline</span>
+                </div>
+                <ul class="updates-list">
+                    <li class="update-item">
+                        <span class="update-date">May 2026</span>
+                        <span class="update-text">Traveling to Hamburg, Germany for collaborative research
+                            exploration.</span>
+                    </li>
+
+                    <li class="update-item">
+                        <span class="update-date">Jan 2026</span>
+                        <span class="update-text"> The latest version of our pre-print paper<strong>"StemTox: From
+                                Social Tags to Fine-Grained Toxic Meme Detection via Entropy-Guided Multi-Task
+                                Learning"</strong>
+                            is now live on arXiv!</span>
+                    </li>
+                    <li class="update-item">
+                        <span class="update-date">Jan 2026</span>
+                        <span class="update-text">Our new pre-print paper <strong>"See, Explain, and Intervene"</strong>
+                            is now live on arXiv!</span>
+                    </li>
+                    <li class="update-item">
+                        <span class="update-date">Dec 2025</span>
+                        <span class="update-text">Received the <strong>IndoML 2026 Travel Grant</strong> to attend
+                            <strong>IndoML 2026</strong> at <strong>BITS Pilani, Hyderabad Campus</strong>, where I
+                            presented my research posters.</span>
+                    </li>
+
+                </ul>
+            </section>
+
+            <section class="section-block" id="education">
+                <div class="section-title">
+                    Academic Background <span>03 // Matrix</span>
+                </div>
+
+                <div class="scholarly-stack">
+                    <div class="scholarly-row">
+                        <div class="row-timeline">2026 — Present</div>
+                        <div class="row-content">
+                            <h3>Doctor of Philosophy (Ph.D.) — Computer Science & Engineering</h3>
+                            <div class="sub-institution">
+                                <a href="https://www.iitkgp.ac.in/" target="_blank" rel="noopener noreferrer">Indian
+                                    Institute of Technology, Kharagpur, India</a>
+                            </div>
+                            <div class="details">
+                                Core Focus Areas: Multimodal Harmful Content Detection.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scholarly-row">
+                        <div class="row-timeline">2020 — 2024</div>
+                        <div class="row-content">
+                            <h3>Bachelor of Technology (B.Tech.) — Computer Science & Engineering</h3>
+                            <div class="sub-institution">
+                                <a href="https://www.gcekjr.ac.in/" target="_blank" rel="noopener noreferrer">Government
+                                    College of Engineering, Keonjhar, India</a>
+                            </div>
+                            <div class="details">
+                                Graduated with First Class Honors. Completed a capstone project focused on deep
+                                learning-based image processing and optimization routines.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scholarly-row">
+                        <div class="row-timeline">2018 — 2020</div>
+                        <div class="row-content">
+                            <h3>Higher Secondary (PCM-Science)</h3>
+                            <div class="sub-institution">
+                                <a href="https://adyanthighersecondaryschool.org/" target="_blank"
+                                    rel="noopener noreferrer">Adyant Higher Secondary School, Bhubaneswar, India</a>
+                            </div>
+                            <div class="details">
+                                Track track record focusing on basic sciences, mathematics, and foundational algorithmic
+                                problem-solving.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-block" id="publications">
+                <div class="section-title">
+                    Peer-Reviewed Publications
+                    <div class="filter-header-menu">
+                        <button class="formal-tab-btn active-tab" data-target="all">All Records</button>
+                        <button class="formal-tab-btn" data-target="peer">Conference Track</button>
+                        <button class="formal-tab-btn" data-target="symposium">Preprints/Workshops</button>
+                    </div>
+                </div>
+
+                <div class="scholarly-stack">
+                    <div class="pub-record scholarly-row" data-classification="peer">
+                        <div class="row-timeline">2026</div>
+                        <div class="row-content">
+                            <h3>StemTox: From Social Tags to Fine-Grained Toxic Meme Detection via Entropy-Guided
+                                Multi-Task Learning</h3>
+                            <div class="author-list"><strong>Subhankar Swain</strong>, Naquee Rizwan, Vishwa Gangadhar
+                                S, Nayandeep Deb, Animesh Mukherjee.</div>
+                            <div class="venue-tag">arXiv Preprints repository (cs.CL).</div>
+                            <div class="pub-assets">
+                                <a href="https://arxiv.org/pdf/2508.04166" target="_blank" class="asset-link">[ArXiv
+                                    Index]</a>
+                            </div>
+
+                            <!-- <div class="venue-tag">Transactions of the Association for Computational Linguistics (TACL)
+                                / Under Review.</div> -->
+                            <!-- <div class="pub-assets">
+                                <a href="#" class="asset-link">[Dataset Ledger]</a>
+                                <a href="#" class="asset-link">[Execution Source]</a>
+                            </div> -->
+                        </div>
+                    </div>
+
+                    <div class="pub-record scholarly-row" data-classification="peer">
+                        <div class="row-timeline">2026</div>
+                        <div class="row-content">
+                            <h3>See, Explain, and Intervene: A Few-Shot Multimodal Agent Framework for Hateful Meme
+                                Moderation</h3>
+                            <div class="author-list">Naquee Rizwan, <strong>Subhankar Swain</strong>, Paramananda
+                                Bhaskar, Gagan Aryan, Shehryaar Shah Khan, Animesh Mukherjee.</div>
+                            <div class="venue-tag">arXiv Preprints repository (cs.CL).</div>
+                            <div class="pub-assets">
+                                <a href="https://arxiv.org/pdf/2601.04692" target="_blank" class="asset-link">[ArXiv
+                                    Index]</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-block" id="teaching">
+                <div class="section-title">
+                    Teaching Experience <span>04 // Instruction</span>
+                </div>
+                <div class="executive-summary">
+                    <p><strong>Graduate Teaching Assistant [CSE, IIT Kharagpur]</strong></p>
+                    <ul style="margin-left: 1.5rem; line-height: 2;">
+                        <li><strong>CS21201</strong> — Discrete Structures <em>[Autumn 2026]</em></li>
+                        <li><strong>CS60016</strong> — AI and Ethics <em>[Spring 2026]</em></li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section-block" id="experience">
+                <div class="section-title">
+                    Professional Experience <span>05 // Engagements</span>
+                </div>
+
+                <div class="scholarly-stack">
+                    <div class="scholarly-row">
+                        <div class="row-timeline">July 2024 — Present</div>
+                        <div class="row-content">
+                            <h3>Junior Research Fellow</h3>
+                            <div class="sub-institution">
+                                Complex Networks Research Group (CNeRG), Indian Institute of Technology Kharagpur, India
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scholarly-row">
+                        <div class="row-timeline">May 2026 — July 2026</div>
+                        <div class="row-content">
+                            <h3>Guest Researcher</h3>
+                            <div class="sub-institution">
+                                Hub of Computing and Data Science (HCDS), University of Hamburg, Germany
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scholarly-row">
+                        <div class="row-timeline">Sep 2025 — Nov 2025</div>
+                        <div class="row-content">
+                            <h3>AI Software Engineer</h3>
+                            <div class="sub-institution">
+                                Abhinaya Limited, United Kingdom
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scholarly-row">
+                        <div class="row-timeline">May 2024-Mar 2025</div>
+                        <div class="row-content">
+                            <h3>Machine Learning Intern</h3>
+                            <div class="sub-institution">
+                                Nirog Scan by Y3X, India
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="portal-footer">
+                <div>Document Node: IITKGP-CS-SS</div>
+                <div>System Verification: June 2026 Compilation</div>
+            </footer>
+
+        </main>
+    </div>
+
+    <script>
+        // SCROLL SPY ENGINE
+        const contentBlocks = document.querySelectorAll('.section-block');
+        const internalLinks = document.querySelectorAll('.header-nav a');
+
+        const structuralOptions = { root: null, rootMargin: '-40% 0px -40% 0px', threshold: 0 };
+        const pageObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    internalLinks.forEach(link => link.classList.remove('active'));
+                    const activationMatch = document.querySelector(`.header-nav a[href="#${entry.target.id}"]`);
+                    if (activationMatch) activationMatch.classList.add('active');
+                }
+            });
+        }, structuralOptions);
+        contentBlocks.forEach(block => pageObserver.observe(block));
+
+        // FILTER CONTROL ENGINE
+        const filterControls = document.querySelectorAll('.formal-tab-btn');
+        const paperRows = document.querySelectorAll('.pub-record');
+
+        filterControls.forEach(control => {
+            control.addEventListener('click', () => {
+                filterControls.forEach(btn => btn.classList.remove('active-tab'));
+                control.classList.add('active-tab');
+
+                const parsingKey = control.getAttribute('data-target');
+                paperRows.forEach(row => {
+                    if (parsingKey === 'all' || row.getAttribute('data-classification') === parsingKey) {
+                        row.classList.remove('hidden');
+                    } else {
+                        row.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // PROBE SYSTEM
+        const monitorNode = document.getElementById('telemetry-trigger');
+        const executionLogs = [
+            "[PORTAL METRICS]<br>• Status: Environment probed<br>• Node: IITKGP_Cluster_Node_4<br>• Logs: Nominal.",
+            "[PORTAL METRICS]<br>• Active Track: Vision-Language Alignment<br>• Status: Monitoring Layer Constraints.",
+            "[PORTAL METRICS]<br>• Memory State: Purged Clean<br>• Profile Status: Online."
+        ];
+        let currentLogIndex = 0;
+        monitorNode.addEventListener('click', () => {
+            monitorNode.innerHTML = executionLogs[currentLogIndex];
+            currentLogIndex = (currentLogIndex + 1) % executionLogs.length;
+        });
+    </script>
+</body>
+
+</html>
